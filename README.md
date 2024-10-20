@@ -1,6 +1,6 @@
 # Go-Cronjob
 
-![Go](https://img.shields.io/badge/Go-v1.18-blue.svg)
+![Go](https://img.shields.io/badge/Go-v1.23-blue.svg)
 ![MIT License](https://img.shields.io/badge/License-MIT-green.svg)
 [![Go Reference](https://pkg.go.dev/badge/github.com/flyzard/go-cronjob.svg)](https://pkg.go.dev/github.com/flyzard/go-cronjob)
 
@@ -371,26 +371,7 @@ Contributions are welcome! To contribute to the `go-cronjob` project, please fol
 - **Code Quality:** Follow Go's best practices and maintain consistent coding standards.
 - **Documentation:** Update or add documentation for any new features or changes.
 - **Testing:** Add tests for new functionalities to ensure robustness.
-- **Respect Licensing:** Ensure that all contributions comply with the project's MIT License.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
-```
-MIT License
-
-Copyright (c) 2024 [Your Name]
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-[...rest of the MIT License...]
-```
+- **Respect Licensing:** Ensure that all contributions comply with the project's MIT License
 
 ## Acknowledgements
 

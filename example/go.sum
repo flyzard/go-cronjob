@@ -1,0 +1,4 @@
+github.com/flyzard/go-cronjob v1.0.2 h1:Ch3Wt3E+Tf9HXFtMUM2wY5ayhkpkTAO6tEnK/3z44b0=
+github.com/flyzard/go-cronjob v1.0.2/go.mod h1:oXf0nZYSX5/WQQopATvkYOwrPQ6Hrx/Z+JpDcH0Ucbo=
+golang.org/x/text v0.19.0 h1:kTxAhCbGbxhK0IwgSKiMO5awPoDQ0RpfiVYBfK860YM=
+golang.org/x/text v0.19.0/go.mod h1:BuEKDfySbSR4drPmRPG/7iBdf8hvFMuRexcpahXilzY=
