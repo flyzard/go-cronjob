@@ -1,6 +1,6 @@
 module github.com/felizardoj/cronjob/example
 
-go 1.23.1
+go 1.24.0
 
 require github.com/flyzard/go-cronjob v1.0.2
 
