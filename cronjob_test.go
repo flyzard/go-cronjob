@@ -138,7 +138,7 @@ func TestCronScheduler_Concurrency(t *testing.T) {
 	var wg sync.WaitGroup
 	for i := 0; i < 10; i++ {
 		wg.Add(1)
-		go func(i int) {
+		go func(_ int) {
 			defer wg.Done()
 			err := scheduler.AddJob("* * * * * *", func() {
 				// Simple task

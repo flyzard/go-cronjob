@@ -92,30 +92,30 @@ func ParseCronExpression(expr string) (*CronExpression, error) {
 	}, nil
 }
 
-func parseField(field string, min, max int, nameToNumber map[string]int) ([]int, error) {
+func parseField(field string, minVal, maxVal int, nameToNumber map[string]int) ([]int, error) {
 	if field == "*" {
 		var values []int
-		for i := min; i <= max; i++ {
+		for i := minVal; i <= maxVal; i++ {
 			values = append(values, i)
 		}
 		return values, nil
 	}
 
 	if strings.Contains(field, "/") {
-		return parseStepField(field, min, max, nameToNumber)
+		return parseStepField(field, minVal, maxVal, nameToNumber)
 	}
 
 	var values []int
 	parts := strings.Split(field, ",")
 	for _, part := range parts {
 		if strings.Contains(part, "-") {
-			rangeValues, err := parseRange(part, min, max, nameToNumber)
+			rangeValues, err := parseRange(part, minVal, maxVal, nameToNumber)
 			if err != nil {
 				return nil, err
 			}
 			values = append(values, rangeValues...)
 		} else {
-			num, err := parseValue(part, min, max, nameToNumber)
+			num, err := parseValue(part, minVal, maxVal, nameToNumber)
 			if err != nil {
 				return nil, err
 			}
@@ -125,7 +125,7 @@ func parseField(field string, min, max int, nameToNumber map[string]int) ([]int,
 	return values, nil
 }
 
-func parseValue(part string, min, max int, nameToNumber map[string]int) (int, error) {
+func parseValue(part string, minVal, maxVal int, nameToNumber map[string]int) (int, error) {
 
 	caser := cases.Title(language.Und)
 
@@ -139,19 +139,19 @@ func parseValue(part string, min, max int, nameToNumber map[string]int) (int, er
 	if err != nil {
 		return 0, fmt.Errorf("invalid value: %s", part)
 	}
-	if num < min || num > max {
+	if num < minVal || num > maxVal {
 		return 0, fmt.Errorf("value out of range: %d", num)
 	}
 	return num, nil
 }
 
-func parseStepField(field string, min, max int, nameToNumber map[string]int) ([]int, error) {
+func parseStepField(field string, minVal, maxVal int, nameToNumber map[string]int) ([]int, error) {
 	parts := strings.Split(field, "/")
 	if len(parts) != 2 {
 		return nil, fmt.Errorf("invalid step field: %s", field)
 	}
 
-	baseValues, err := parseField(parts[0], min, max, nameToNumber)
+	baseValues, err := parseField(parts[0], minVal, maxVal, nameToNumber)
 	if err != nil {
 		return nil, err
 	}
@@ -163,25 +163,25 @@ func parseStepField(field string, min, max int, nameToNumber map[string]int) ([]
 
 	var values []int
 	for _, val := range baseValues {
-		if (val-min)%step == 0 {
+		if (val-minVal)%step == 0 {
 			values = append(values, val)
 		}
 	}
 	return values, nil
 }
 
-func parseRange(part string, min, max int, nameToNumber map[string]int) ([]int, error) {
+func parseRange(part string, minVal, maxVal int, nameToNumber map[string]int) ([]int, error) {
 	rangeParts := strings.Split(part, "-")
 	if len(rangeParts) != 2 {
 		return nil, fmt.Errorf("invalid range: %s", part)
 	}
 
-	start, err := parseValue(rangeParts[0], min, max, nameToNumber)
+	start, err := parseValue(rangeParts[0], minVal, maxVal, nameToNumber)
 	if err != nil {
 		return nil, fmt.Errorf("invalid range start: %s", rangeParts[0])
 	}
 
-	end, err := parseValue(rangeParts[1], min, max, nameToNumber)
+	end, err := parseValue(rangeParts[1], minVal, maxVal, nameToNumber)
 	if err != nil {
 		return nil, fmt.Errorf("invalid range end: %s", rangeParts[1])
 	}
@@ -189,10 +189,10 @@ func parseRange(part string, min, max int, nameToNumber map[string]int) ([]int, 
 	if start > end {
 		// For ranges like Fri-Mon, which should wrap around
 		var values []int
-		for i := start; i <= max; i++ {
+		for i := start; i <= maxVal; i++ {
 			values = append(values, i)
 		}
-		for i := min; i <= end; i++ {
+		for i := minVal; i <= end; i++ {
 			values = append(values, i)
 		}
 		return values, nil
