@@ -108,15 +108,15 @@ func (c *CronScheduler) Stop() {
 }
 
 func nextRunTime(expr *CronExpression, fromTime time.Time) time.Time {
-	// Start from the next minute
-	nextTime := fromTime.Add(time.Minute - time.Duration(fromTime.Second())*time.Second - time.Duration(fromTime.Nanosecond()))
+	// Start from the next second
+	nextTime := fromTime.Add(time.Second - time.Duration(fromTime.Nanosecond()))
 	// Limit to prevent infinite loops in case of errors
 	maxIterations := 1000000
-	for i := 0; i < maxIterations; i++ {
+	for range maxIterations {
 		if isTimeMatching(expr, nextTime) {
 			return nextTime
 		}
-		nextTime = nextTime.Add(time.Minute)
+		nextTime = nextTime.Add(time.Second)
 	}
 	// If we exceed maxIterations, return zero time
 	return time.Time{}
@@ -174,6 +174,9 @@ func (c *CronScheduler) ListJobs() []string {
 }
 
 func isTimeMatching(expr *CronExpression, t time.Time) bool {
+	if !contains(expr.Seconds, t.Second()) {
+		return false
+	}
 	if !contains(expr.Minutes, t.Minute()) {
 		return false
 	}

@@ -12,6 +12,7 @@ import (
 
 // CronExpression represents a cron expression.
 type CronExpression struct {
+	Seconds    []int
 	Minutes    []int
 	Hours      []int
 	DayOfMonth []int
@@ -47,36 +48,42 @@ var dayNameToNumber = map[string]int{
 // ParseCronExpression parses a cron expression and returns a CronExpression object.
 func ParseCronExpression(expr string) (*CronExpression, error) {
 	fields := strings.Fields(expr)
-	if len(fields) != 5 {
-		return nil, fmt.Errorf("invalid cron expression: %s", expr)
+	if len(fields) != 6 {
+		return nil, fmt.Errorf("invalid cron expression: expected 6 fields (seconds minutes hours day month weekday), got %d", len(fields))
 	}
 
-	minutes, err := parseField(fields[0], 0, 59, nil)
+	seconds, err := parseField(fields[0], 0, 59, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	hours, err := parseField(fields[1], 0, 23, nil)
+	minutes, err := parseField(fields[1], 0, 59, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	dayOfMonth, err := parseField(fields[2], 1, 31, nil)
+	hours, err := parseField(fields[2], 0, 23, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	month, err := parseField(fields[3], 1, 12, monthNameToNumber)
+	dayOfMonth, err := parseField(fields[3], 1, 31, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	dayOfWeek, err := parseField(fields[4], 0, 6, dayNameToNumber)
+	month, err := parseField(fields[4], 1, 12, monthNameToNumber)
+	if err != nil {
+		return nil, err
+	}
+
+	dayOfWeek, err := parseField(fields[5], 0, 6, dayNameToNumber)
 	if err != nil {
 		return nil, err
 	}
 
 	return &CronExpression{
+		Seconds:    seconds,
 		Minutes:    minutes,
 		Hours:      hours,
 		DayOfMonth: dayOfMonth,
